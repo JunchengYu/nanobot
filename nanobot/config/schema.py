@@ -13,6 +13,11 @@ class Base(BaseModel):
 
     model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
 
+class QimingConfig(Base):
+    """Qiming channel configuration."""
+    # @TODO: unfinished
+    enabled: bool = False
+    webhook_url: str = ""  # Webhook URL for Qiming to send messages to
 
 class WhatsAppConfig(Base):
     """WhatsApp channel configuration."""
@@ -199,6 +204,7 @@ class ChannelsConfig(Base):
     slack: SlackConfig = Field(default_factory=SlackConfig)
     qq: QQConfig = Field(default_factory=QQConfig)
     matrix: MatrixConfig = Field(default_factory=MatrixConfig)
+    qiming: QimingConfig = Field(default_factory=QimingConfig)
 
 
 class AgentDefaults(Base):
