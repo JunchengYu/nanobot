@@ -27,8 +27,8 @@ RUN uv pip install --system --no-cache .
 
 # Build the WhatsApp bridge
 WORKDIR /app/bridge
-RUN npm install --registry=https://registry.npmmirror.com && \
-    npm run build --registry=https://registry.npmmirror.com
+RUN npm install --registry=http://mirrors.tencent.com/npm/ && \
+    npm run build --registry=http://mirrors.tencent.com/npm/
 WORKDIR /app
 
 # Create config directory

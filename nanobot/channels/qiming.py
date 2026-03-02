@@ -81,7 +81,7 @@ class QimingChannel(BaseChannel):
                 content=message.text_msg.content,
                 media=None,
                 metadata=None,
-                session_key=None,
+                session_key=f"{message.group_id}_{message.phone}",
             )
 
     async def _send_message(self, msg: OutboundMessage) -> None:
