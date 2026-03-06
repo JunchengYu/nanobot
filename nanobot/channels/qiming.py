@@ -70,6 +70,7 @@ class QimingChannel(BaseChannel):
             """Handle incoming qiming webhook requests"""
             try:
                 data = await request.json()
+                logger.info(f"Received Qiming webhook request: {data}")
                 message = QimingMessage(**data)
             except json.JSONDecodeError:
                 logger.error("Invalid JSON payload in qiming webhook request")
@@ -80,7 +81,7 @@ class QimingChannel(BaseChannel):
                 chat_id=message.group_id,
                 content=message.text_msg.content,
                 media=None,
-                metadata=None,
+                metadata={"callback_url": message.callback_url},
                 session_key=f"{message.group_id}_{message.phone}",
             )
 
@@ -94,7 +95,6 @@ class QimingChannel(BaseChannel):
             logger.warning("Empty message content to send")
             return
 
-        logger.info(f"Sending message to Qiming: {msg}")
         _body = {
             "textMsg": {
                 "content": msg.content,
@@ -107,10 +107,8 @@ class QimingChannel(BaseChannel):
             _body["textMsg"]["mentionType"] = 2
 
         _response_body = QimingResponseMessage(**_body)
-        logger.info(f"Response message to Qiming: {_response_body}")
-        logger.info(f"Webhook URL: {self.config.webhook_url}")
         resp = await self._http.post(
-            self.config.webhook_url,
+            msg.metadata["callback_url"],
             json=_response_body.model_dump(exclude_none=True, by_alias=True)
         )
         logger.info(f"Sent message to Qiming: {resp.status_code} {resp.text}")
