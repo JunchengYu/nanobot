@@ -14,7 +14,7 @@ from loguru import logger
 
 from nanobot.agent.context import ContextBuilder
 
-from nanobot.agent.SessionContext import SessionContextBuilder
+from nanobot.agent.session_context import SessionContextBuilder
 
 from nanobot.agent.memory import MemoryStore
 from nanobot.agent.subagent import SubagentManager
