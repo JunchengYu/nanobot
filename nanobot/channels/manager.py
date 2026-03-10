@@ -137,6 +137,18 @@ class ChannelManager:
             except ImportError as e:
                 logger.warning("QQ channel not available: {}", e)
 
+        # Qiming channel
+        if self.config.channels.qiming.enabled:
+            try:
+                from nanobot.channels.qiming import QimingChannel
+                self.channels["qiming"] = QimingChannel(
+                    self.config.channels.qiming,
+                    self.bus,
+                )
+                logger.info("Qiming channel enabled")
+            except ImportError as e:
+                logger.warning("Qiming channel not available: {}", e)
+    
         # Matrix channel
         if self.config.channels.matrix.enabled:
             try:
